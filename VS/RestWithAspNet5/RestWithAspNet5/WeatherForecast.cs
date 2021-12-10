@@ -1,6 +1,6 @@
 using System;
 
-namespace RestWithAspNet
+namespace RestWithAspNet5
 {
     public class WeatherForecast
     {
