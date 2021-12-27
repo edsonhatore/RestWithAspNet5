@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestWithAspNet5.Model.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -8,12 +9,9 @@ namespace RestWithAspNet5.Model
 {
     
     [Table("person")]
-    public class Person
+    public class Person :BaseEntity
     {
-        [Column("id")]// igual ao banco        
-        public long Id { get; set; }
-
-        [Column("first_name")]// igual ao banco      
+         [Column("first_name")]// igual ao banco      
         public string FirstName { get; set; }
 
         [Column("last_name")]// igual ao banco      

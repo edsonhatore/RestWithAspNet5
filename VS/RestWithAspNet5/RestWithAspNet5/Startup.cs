@@ -7,11 +7,11 @@ using RestWithAspNet5.Model.Context;
 using RestWithAspNet5.Business;
 using RestWithAspNet5.Business.Implementations;
 using Microsoft.EntityFrameworkCore;
-using RestWithAspNet5.Repository.Implementations;
 using RestWithAspNet5.Repository;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using RestWithAspNet5.Repository.Generic;
 
 namespace RestWithAspNet5
 {
@@ -48,9 +48,9 @@ namespace RestWithAspNet5
             }
             services.AddApiVersioning();
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-            services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
+        //   services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
             services.AddScoped<IBooksBusiness, BookBusinessImplementation>();
-            services.AddScoped<IBooksRepository, BookRepositoryImplementation>();
+            services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 
         }
 
