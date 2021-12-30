@@ -6,44 +6,44 @@ using System.Linq;
 
 namespace RestWithAspNet5.Data.Converter.Implementation
 {
-    public class PersonConverter : IParcer<PersonVO, Person>, IParcer<Person, PersonVO>
+    public class BooksConverter : IParcer<BooksVO, Books>, IParcer<Books, BooksVO>
     {
-        public Person Parce(PersonVO origem)
+        public Books Parce(BooksVO origem)
         {
             if (origem ==null)
             {
                 return null;
                 }
-            return new Person
+            return new Books
             {
-                Id = origem.Id, 
-                FirstName = origem.FirstName,
-                LastName = origem.LastName,
-                Address = origem.Address,
-                Gender = origem.Gender
+                 Id = origem.Id, 
+                 Author = origem.Author,
+                 Launch_Date = origem.Launch_Date,
+                 Title = origem.Title,
+                    Price = origem.Price
             };
 
         }
 
 
 
-        public PersonVO Parce(Person origem)
+        public BooksVO Parce(Books origem)
         {
             if (origem == null)
             {
                 return null;
             }
-            return new PersonVO
+            return new BooksVO
             {
                 Id = origem.Id,
-                FirstName = origem.FirstName,
-                LastName = origem.LastName,
-                Address = origem.Address,
-                Gender = origem.Gender
+                Author = origem.Author,
+                Launch_Date = origem.Launch_Date,
+                Title = origem.Title,
+                Price = origem.Price
             };
         }
 
-        public List<PersonVO> Parce(List<Person> origem)
+        public List<BooksVO> Parce(List<Books> origem)
         {
             if (origem == null)
             {
@@ -51,7 +51,7 @@ namespace RestWithAspNet5.Data.Converter.Implementation
             }
             return origem.Select(item => Parce(item)).ToList();
         }
-        public List<Person> Parce(List<PersonVO> origem)
+        public List<Books> Parce(List<BooksVO> origem)
         {
             if (origem == null)
             {

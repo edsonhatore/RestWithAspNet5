@@ -1,4 +1,6 @@
-﻿using RestWithAspNet5.Model;
+﻿using RestWithAspNet5.Data.Converter.Implementation;
+using RestWithAspNet5.Data.VO;
+using RestWithAspNet5.Model;
 using RestWithAspNet5.Repository;
 using System;
 using System.Collections.Generic;
@@ -11,17 +13,21 @@ namespace RestWithAspNet5.Business.Implementations
     {
 
         private readonly IRepository<Books> _repository;
+        private readonly BooksConverter _converter;
 
         public BookBusinessImplementation(IRepository<Books> repository)
         {
             _repository = repository;
+            _converter = new BooksConverter();
         }
 
-        public Books Create(Books book)
+        public BooksVO Create(BooksVO book)
         {
+            var bookEntity = _converter.Parce(book);
+            bookEntity = _repository.Create(bookEntity); // trabalha com entidade
 
+            return _converter.Parce(bookEntity);// retorna vo
 
-            return _repository.Create(book);
 
         }
 
@@ -32,21 +38,24 @@ namespace RestWithAspNet5.Business.Implementations
 
         }
 
-        public List<Books> FindAll()
+        public List<BooksVO> FindAll()
         {
-            return _repository.FindAll();
+            return _converter.Parce(_repository.FindAll());
         }
 
-        public Books FindById(long id)
+        public BooksVO FindById(long id)
         {
 
-            return _repository.FindById(id);
+            return _converter.Parce(_repository.FindById(id));
         }
 
-        public Books Update(Books person)
+        public BooksVO Update(BooksVO book)
         {
-            return _repository.Update(person);
+            
+            var bookEntity = _converter.Parce(book);
+            bookEntity = _repository.Update(bookEntity); // trabalha com entidade
 
+            return _converter.Parce(bookEntity);// retorna vo
         }
 
     }

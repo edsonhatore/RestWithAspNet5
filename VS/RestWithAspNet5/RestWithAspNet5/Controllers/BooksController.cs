@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RestWithAspNet5.Data.VO;
 
 namespace RestWithAspNet5.Controllers
 {
@@ -43,7 +44,7 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Books book)
+        public IActionResult Post([FromBody] BooksVO book)
         {
           if (book == null) return BadRequest();
             return Ok(_bookBusiness.Create(book));
@@ -51,7 +52,7 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Books book)
+        public IActionResult Put([FromBody] BooksVO book)
         {
             if (book == null) return BadRequest();
             return Ok(_bookBusiness.Update(book));
