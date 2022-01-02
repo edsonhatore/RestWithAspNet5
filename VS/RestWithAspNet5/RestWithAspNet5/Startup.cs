@@ -12,6 +12,9 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using RestWithAspNet5.Repository.Generic;
+using System.Net.Http.Headers;
+using RestWithAspNet5.Hypermedia.Filters;
+using RestWithAspNet5.Hypermedia.Enricher;
 
 namespace RestWithAspNet5
 {
@@ -46,6 +49,19 @@ namespace RestWithAspNet5
             {
                 Migratedatabase(connection);
             }
+
+            //services.AddMvc(options =>{
+            //    options.RespectBrowserAcceptHeader = true;
+            //    options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
+            //    options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+            //}).AddXmlSerializerFormatters();
+
+
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+
+            services.AddSingleton(filterOptions);
+
             services.AddApiVersioning();
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
         //   services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
@@ -73,6 +89,7 @@ namespace RestWithAspNet5
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute("DefaultApi", "{controller=valure}/{id?}");
             });
         }
 
