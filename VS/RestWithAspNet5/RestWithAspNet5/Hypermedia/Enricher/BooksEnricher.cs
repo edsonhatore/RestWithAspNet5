@@ -1,23 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet5.Data.VO;
 using RestWithAspNet5.Hypermedia.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RestWithAspNet5.Hypermedia.Enricher
 {
 
-    public class PersonEnricher : ContentResponseEnricher<PersonVO>
+    public class BooksEnricher : ContentResponseEnricher<BooksVO>
     {
         private readonly object _lok = new object();
 
       
-        protected override Task EnrichModel(PersonVO content, IUrlHelper urlHelper)
+        protected override Task EnrichModel(BooksVO content, IUrlHelper urlHelper)
         {
-            var path = "api/person/v1";
+            var path = "api/book/v1";
             string link = getLink(content.Id, urlHelper, path);
 
             content.Links.Add(new HyperMediaLink()

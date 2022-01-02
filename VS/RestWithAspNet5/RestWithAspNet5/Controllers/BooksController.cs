@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RestWithAspNet5.Data.VO;
+using RestWithAspNet5.Hypermedia.Filters;
 
 namespace RestWithAspNet5.Controllers
 {
@@ -27,6 +28,7 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return Ok(_bookBusiness.FindAll());
@@ -34,6 +36,7 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpGet("{id}")]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id)
         {
             var books = _bookBusiness.FindById(id);
@@ -44,6 +47,7 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] BooksVO book)
         {
           if (book == null) return BadRequest();
@@ -52,6 +56,7 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpPut]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] BooksVO book)
         {
             if (book == null) return BadRequest();
