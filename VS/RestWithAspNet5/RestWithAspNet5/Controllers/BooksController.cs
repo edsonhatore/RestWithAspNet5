@@ -28,6 +28,10 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType((200), Type = typeof(List<BooksVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
@@ -36,6 +40,9 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id)
         {
@@ -47,6 +54,9 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType((200), Type = typeof(BooksVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] BooksVO book)
         {
@@ -56,6 +66,9 @@ namespace RestWithAspNet5.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType((200), Type = typeof(BooksVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] BooksVO book)
         {
@@ -75,7 +88,11 @@ namespace RestWithAspNet5.Controllers
             return 0;
         }
 
+
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(401)]
         public IActionResult Delete(long id)
         {
             _bookBusiness.Delete(id);
