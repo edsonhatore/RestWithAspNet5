@@ -8,11 +8,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using RestWithAspNet5.Data.VO;
 using RestWithAspNet5.Hypermedia.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithAspNet5.Controllers
 {
     [ApiVersion("1")]
     [ApiController]
+    [Authorize("Bearer")]
     [Route("api/[controller]/v{version:ApiVersion}")]
     public class BooksController : ControllerBase
     {

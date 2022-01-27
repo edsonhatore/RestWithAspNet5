@@ -17,6 +17,14 @@ using RestWithAspNet5.Hypermedia.Filters;
 using RestWithAspNet5.Hypermedia.Enricher;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
+using RestWithAspNet5.Services;
+using RestWithAspNet5.Services.Implementation;
+using RestWithAspNet5.Configurations;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithAspNet5
 {
@@ -36,11 +44,55 @@ namespace RestWithAspNet5
             
         }
 
-      
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // seguranca 
+            var tokenConfiguration = new TokenConfiguration();
+            new ConfigureFromConfigurationOptions<TokenConfiguration>
+                (Configuration.GetSection("TokenConfiguration")
+                ).Configure(tokenConfiguration);
+
+            services.AddSingleton(tokenConfiguration);
+            //autentication 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                
+            }).AddJwtBearer(Opcao =>
+            {
+                Opcao.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = tokenConfiguration.Issuer,
+                    ValidAudience = tokenConfiguration.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret))
+                };
+
+            }) ;
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build()
+                    );
+            });
+
+
+
+            services.AddCors(options => options.AddDefaultPolicy(builder=> {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            })); 
 
             services.AddControllers();
 
@@ -81,6 +133,12 @@ namespace RestWithAspNet5
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
         //   services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
             services.AddScoped<IBooksBusiness, BookBusinessImplementation>();
+
+            services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+
             services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 
         }
@@ -98,6 +156,8 @@ namespace RestWithAspNet5
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseSwagger();
             app.UseSwaggerUI(c=> {
