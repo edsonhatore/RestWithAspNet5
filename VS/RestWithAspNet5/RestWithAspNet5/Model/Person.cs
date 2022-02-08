@@ -23,5 +23,8 @@ namespace RestWithAspNet5.Model
         [Column("gender")]// igual ao banco      
         public string Gender { get; set; }
 
+        [Column("enabled")]// igual ao banco      
+        public bool Enabled { get; set; }
+
     }
 }

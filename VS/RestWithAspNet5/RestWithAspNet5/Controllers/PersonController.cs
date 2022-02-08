@@ -29,15 +29,15 @@ namespace RestWithAspNet5.Controllers
             _personBusiness = personBusiness;
         }
 
-        [HttpGet]
+        [HttpGet("{sortDirection}/{pageSize}/{page}")]
         [ProducesResponseType((200),Type= typeof(List<PersonVO>)) ]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult Get()
+        public IActionResult Get( [FromQuery] string name , string sortDirection , int pageSize , int page)
         {
-            return Ok(_personBusiness.FindAll());
+            return Ok(_personBusiness.FindWithpagedSearch(name, sortDirection, pageSize, page));
 
         }
 
@@ -79,6 +79,20 @@ namespace RestWithAspNet5.Controllers
 
         }
 
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Patch(long id)
+        {
+            var person = _personBusiness.Disable(id);
+             return Ok(person);
+
+        }
+
+
         private decimal ConvertTodecimal(string strNumber)
         {
             decimal decimalValue;
@@ -98,6 +112,21 @@ namespace RestWithAspNet5.Controllers
         {
             _personBusiness.Delete(id);
             return NoContent();
+
+
+        }
+
+        [HttpGet("findPersonByName")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Get([FromQuery] string firstname, [FromQuery] string lastname )
+        {
+            var person = _personBusiness.FinByName(firstname,lastname);
+
+            if (person == null) return NotFound();
+            return Ok(person);
 
 
         }

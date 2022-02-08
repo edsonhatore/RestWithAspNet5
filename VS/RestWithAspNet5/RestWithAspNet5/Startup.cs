@@ -140,6 +140,7 @@ namespace RestWithAspNet5
 
 
             services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
+            services.AddScoped(typeof(IPersonRepository),typeof(PersonRepository));
 
         }
 
