@@ -1,0 +1,1 @@
+for i in `find /home/database/ -name "*.sql" | sort --version-sort`; do mysql -udocker -pDocker@976431! restwithaspnet5 < $i; done;

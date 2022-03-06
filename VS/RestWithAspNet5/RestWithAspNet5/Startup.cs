@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace RestWithAspNet5
 {
@@ -99,10 +100,10 @@ namespace RestWithAspNet5
             var connection = Configuration["MySqlConnection:MySqlConnectionString"];
             services.AddDbContext<MySQLContext>(options =>options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
 
-            if (Environment.IsDevelopment())
-            {
-                Migratedatabase(connection);
-            }
+            //if (Environment.IsDevelopment())
+            //{
+             //  Migratedatabase(connection);
+            //}
 
             //services.AddMvc(options =>{
             //    options.RespectBrowserAcceptHeader = true;
@@ -129,10 +130,11 @@ namespace RestWithAspNet5
                 });
             });
 
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
         //   services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
             services.AddScoped<IBooksBusiness, BookBusinessImplementation>();
+            services.AddScoped<IFileBusiness, FileBusinessImplementation>();
 
             services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
             services.AddTransient<ITokenService, TokenService>();

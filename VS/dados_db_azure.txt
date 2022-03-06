@@ -1,0 +1,6 @@
+banco de dados no azure
+  my sql 
+    grupo recursos = erudio-api-rest
+   nome servidor = erudio-db-server
+user = edsonhatore
+    senha= mysql!1976431
