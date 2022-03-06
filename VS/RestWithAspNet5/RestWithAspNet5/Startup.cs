@@ -120,7 +120,7 @@ namespace RestWithAspNet5
             services.AddApiVersioning();
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1",new OpenApiInfo { 
-                Title="REST APIS From 0 to Azure with ASP.NET Core 5 and Docker - Foo Bar", 
+                Title="REST APIS From 0 to Azure with ASP.NET Core 5 and Docker - Foo Bar2", 
                 Version="v1",
                 Description = "REST APIS From 0 to Azure with ASP.NET Core 5 and Docker",
                     Contact = new OpenApiContact { 
